@@ -1,7 +1,8 @@
 package com.monolito.modularizar.order.internal.service;
 
-import com.monolito.modularizar.domain.Invoice;
 import com.monolito.modularizar.inventory.internal.domain.Item;
+import com.monolito.modularizar.invoice.api.InvoiceApi;
+import com.monolito.modularizar.invoice.internal.domain.Invoice;
 import com.monolito.modularizar.order.internal.persistence.OrderEntity;
 import com.monolito.modularizar.order.internal.persistence.OrderLineEntity;
 import com.monolito.modularizar.order.internal.persistence.OrderStatusPersistence;
@@ -20,6 +21,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final InventoryApi inventoryApi;
+    private final InvoiceApi invoiceApi;
 
 
     @Transactional
@@ -49,16 +51,12 @@ public class OrderService {
             inventoryApi.adjustStock(itemId, -quantity);
         }
 
-        Invoice invoice = Invoice.builder()
-            .number("FAC-" + System.currentTimeMillis())
-            .total(total)
-            .issuedAt(LocalDateTime.now())
-            .build();
+        var invoiceResponse = invoiceApi.create(total);
 
         OrderEntity orderEntity = OrderEntity.builder()
             .status(OrderStatusPersistence.PENDING)
             .total(total)
-            .invoice(invoice)
+            .invoiceId(invoiceResponse.getId())
             .lines(lines)
             .build();
 
