@@ -1,6 +1,6 @@
 package com.monolito.modularizar.inventory.api;
 
-import com.monolito.modularizar.inventory.internal.domain.Item;
+import com.monolito.modularizar.inventory.internal.persistence.ItemEntity;
 import com.monolito.modularizar.inventory.api.dto.AdjustStockRequest;
 import com.monolito.modularizar.inventory.api.dto.CreateItemRequest;
 import com.monolito.modularizar.inventory.internal.service.InventoryService;
@@ -26,18 +26,18 @@ public class InventoryController {
     }
 
     @GetMapping
-    public List<Item> findAll() {
+    public ResponseEntity<?> findAll() {
         return inventoryService.getItems();
     }
 
     @GetMapping("/{id}")
-    public Item findById(@PathVariable Long id) {
+    public ItemEntity findById(@PathVariable Long id) {
         return inventoryService.getItem(id);
     }
 
     @PostMapping
-    public ResponseEntity<Item> create(@Valid @RequestBody CreateItemRequest request) {
-        Item created = inventoryService.createItem(
+    public ResponseEntity<ItemEntity> create(@Valid @RequestBody CreateItemRequest request) {
+        ItemEntity created = inventoryService.createItem(
             request.getName(),
             request.getSku(),
             request.getStock(),
@@ -47,7 +47,7 @@ public class InventoryController {
     }
 
     @PatchMapping("/{id}/stock")
-    public ResponseEntity<Item> adjustStock(@PathVariable Long id, @Valid @RequestBody AdjustStockRequest request) {
+    public ResponseEntity<ItemEntity> adjustStock(@PathVariable Long id, @Valid @RequestBody AdjustStockRequest request) {
         return ResponseEntity.ok(inventoryService.adjustStock(id, request.getDelta()));
     }
 }

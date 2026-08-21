@@ -1,6 +1,6 @@
 package com.monolito.modularizar.order.internal.service;
 
-import com.monolito.modularizar.inventory.internal.domain.Item;
+import com.monolito.modularizar.inventory.internal.persistence.ItemEntity;
 import com.monolito.modularizar.invoice.api.InvoiceApi;
 import com.monolito.modularizar.inventory.api.InventoryApi;
 import com.monolito.modularizar.order.api.OrderApi;
@@ -46,7 +46,7 @@ public class OrderService implements OrderApi {
                 throw new IllegalArgumentException("La cantidad debe ser positiva.");
             }
 
-            Item item = inventoryApi.getItem(itemId);
+            ItemEntity item = inventoryApi.getItem(itemId);
             if (item.getStock() < quantity) {
                 throw new IllegalArgumentException("No hay stock suficiente para el item " + item.getName());
             }

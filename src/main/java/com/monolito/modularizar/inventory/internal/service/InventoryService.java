@@ -1,6 +1,7 @@
 package com.monolito.modularizar.inventory.internal.service;
 
 import com.monolito.modularizar.inventory.internal.domain.Item;
+import com.monolito.modularizar.inventory.internal.persistence.ItemEntity;
 import com.monolito.modularizar.inventory.api.InventoryApi;
 import com.monolito.modularizar.inventory.internal.persistence.ItemRepository;
 import java.util.List;
@@ -16,7 +17,7 @@ public class InventoryService implements InventoryApi {
         this.itemRepository = itemRepository;
     }
 
-    public List<Item> getItems() {
+    public List<ItemEntity> getItems() {
         return itemRepository.findAll();
     }
 
@@ -30,11 +31,11 @@ public class InventoryService implements InventoryApi {
 
     @Transactional
     @Override
-    public Item createItem(String name, String sku, int stock, double price) {
+    public ItemEntity createItem(String name, String sku, int stock, double price) {
         if (itemRepository.findBySku(sku).isPresent()) {
             throw new IllegalArgumentException("Ya existe un item con el SKU: " + sku);
         }
-        Item item = Item.builder()
+        ItemEntity item = ItemEntity.builder()
             .name(name)
             .sku(sku)
             .stock(stock)
@@ -45,9 +46,14 @@ public class InventoryService implements InventoryApi {
 
     @Transactional
     @Override
-    public Item adjustStock(Long itemId, int delta) {
+    public ItemEntity adjustStock(Long itemId, int delta) {
         Item item = getItem(itemId);
-        item.adjustStock(delta);
+        int nextStock = item.getStock() - delta;
+        if (nextStock <= 0) {
+            throw new IllegalArgumentException("No hay suficiente stock para realizar la operación.");
+        }
+
+        item.setStock(nextStock);
         return itemRepository.save(item);
     }
 }
