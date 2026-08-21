@@ -1,5 +1,6 @@
-package com.monolito.modularizar.domain;
+package com.monolito.modularizar.order.internal.persistence;
 
+import com.monolito.modularizar.domain.Invoice;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.CollectionTable;
@@ -33,7 +34,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Order {
+public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,10 +42,10 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private OrderStatus status;
+    private OrderStatusPersistence status;
 
     @Column(nullable = false)
-    private double total;
+    private Double total;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = jakarta.persistence.CascadeType.ALL)
     @JoinColumn(name = "invoice_id")
@@ -57,5 +58,5 @@ public class Order {
         @AttributeOverride(name = "quantity", column = @Column(name = "quantity", nullable = false)),
         @AttributeOverride(name = "unitPrice", column = @Column(name = "unit_price", nullable = false))
     })
-    private List<OrderLine> lines = new ArrayList<>();
+    private List<OrderLineEntity> lines = new ArrayList<>();
 }

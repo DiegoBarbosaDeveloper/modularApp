@@ -1,31 +1,31 @@
-package com.monolito.modularizar.service;
+package com.monolito.modularizar.order.internal.service;
 
+import com.monolito.modularizar.domain.Invoice;
 import com.monolito.modularizar.domain.Item;
-import com.monolito.modularizar.domain.Order;
-import com.monolito.modularizar.domain.OrderLine;
-import com.monolito.modularizar.domain.OrderStatus;
-import com.monolito.modularizar.invoice.internal.domain.Invoice;
-import com.monolito.modularizar.repository.OrderRepository;
+import com.monolito.modularizar.order.internal.persistence.OrderEntity;
+import com.monolito.modularizar.order.internal.persistence.OrderLineEntity;
+import com.monolito.modularizar.order.internal.persistence.OrderStatusPersistence;
+import com.monolito.modularizar.order.internal.persistence.OrderRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.monolito.modularizar.service.InventoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final InventoryService inventoryService;
+    private final InventoryApi inventoryApi;
 
-    public OrderService(OrderRepository orderRepository, InventoryService inventoryService) {
-        this.orderRepository = orderRepository;
-        this.inventoryService = inventoryService;
-    }
 
     @Transactional
-    public Order createOrder(List<String> lineItems) {
-        List<OrderLine> lines = new ArrayList<>();
+    public OrderEntity createOrder(List<String> lineItems) {
+        List<OrderLineEntity> lines = new ArrayList<>();
         double total = 0.0;
 
         for (String rawLine : lineItems) {
@@ -40,14 +40,14 @@ public class OrderService {
                 throw new IllegalArgumentException("La cantidad debe ser positiva.");
             }
 
-            Item item = inventoryService.getItem(itemId);
+            Item item = inventoryApi.getItem(itemId);
             if (item.getStock() < quantity) {
                 throw new IllegalArgumentException("No hay stock suficiente para el item " + item.getName());
             }
 
             total += item.getPrice() * quantity;
-            lines.add(new OrderLine(item.getId(), quantity, item.getPrice()));
-            inventoryService.adjustStock(itemId, -quantity);
+            lines.add(new OrderLineEntity(item.getId(), quantity, item.getPrice()));
+            inventoryApi.adjustStock(itemId, -quantity);
         }
 
         Invoice invoice = Invoice.builder()
@@ -56,13 +56,13 @@ public class OrderService {
             .issuedAt(LocalDateTime.now())
             .build();
 
-        Order order = Order.builder()
-            .status(OrderStatus.PENDING)
+        OrderEntity orderEntity = OrderEntity.builder()
+            .status(OrderStatusPersistence.PENDING)
             .total(total)
             .invoice(invoice)
             .lines(lines)
             .build();
 
-        return orderRepository.save(order);
+        return orderRepository.save(orderEntity);
     }
 }
