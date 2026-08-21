@@ -1,6 +1,6 @@
-package com.monolito.modularizar.repository;
+package com.monolito.modularizar.inventory.internal.persistence;
 
-import com.monolito.modularizar.domain.Item;
+import com.monolito.modularizar.inventory.internal.domain.Item;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

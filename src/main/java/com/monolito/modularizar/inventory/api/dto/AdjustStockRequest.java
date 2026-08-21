@@ -1,4 +1,4 @@
-package com.monolito.modularizar.dto;
+package com.monolito.modularizar.inventory.api.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

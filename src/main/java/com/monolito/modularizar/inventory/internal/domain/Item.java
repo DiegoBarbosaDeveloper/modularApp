@@ -1,4 +1,4 @@
-package com.monolito.modularizar.domain;
+package com.monolito.modularizar.inventory.internal.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

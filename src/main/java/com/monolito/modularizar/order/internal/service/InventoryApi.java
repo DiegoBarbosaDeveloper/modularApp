@@ -1,6 +1,6 @@
 package com.monolito.modularizar.order.internal.service;
 
-import com.monolito.modularizar.domain.Item;
+import com.monolito.modularizar.inventory.internal.domain.Item;
 
 public interface InventoryApi {
     Item getItem(Long itemId);

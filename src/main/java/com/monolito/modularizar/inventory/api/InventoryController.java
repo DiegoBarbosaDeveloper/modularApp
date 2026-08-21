@@ -1,9 +1,9 @@
-package com.monolito.modularizar.controller;
+package com.monolito.modularizar.inventory.api;
 
-import com.monolito.modularizar.domain.Item;
-import com.monolito.modularizar.dto.AdjustStockRequest;
-import com.monolito.modularizar.dto.CreateItemRequest;
-import com.monolito.modularizar.service.InventoryService;
+import com.monolito.modularizar.inventory.internal.domain.Item;
+import com.monolito.modularizar.inventory.api.dto.AdjustStockRequest;
+import com.monolito.modularizar.inventory.api.dto.CreateItemRequest;
+import com.monolito.modularizar.inventory.internal.service.InventoryService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;

@@ -3,8 +3,8 @@ package com.monolito.modularizar;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.monolito.modularizar.order.internal.persistence.OrderEntity;
-import com.monolito.modularizar.domain.Item;
-import com.monolito.modularizar.service.InventoryService;
+import com.monolito.modularizar.inventory.internal.domain.Item;
+import com.monolito.modularizar.inventory.internal.service.InventoryService;
 import com.monolito.modularizar.order.internal.service.OrderService;
 import java.util.List;
 import org.junit.jupiter.api.Test;

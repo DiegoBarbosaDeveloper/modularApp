@@ -2,8 +2,8 @@ package com.monolito.modularizar;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.monolito.modularizar.domain.Item;
-import com.monolito.modularizar.service.InventoryService;
+import com.monolito.modularizar.inventory.internal.domain.Item;
+import com.monolito.modularizar.inventory.internal.service.InventoryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

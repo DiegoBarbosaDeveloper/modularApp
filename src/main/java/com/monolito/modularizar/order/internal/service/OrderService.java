@@ -1,7 +1,7 @@
 package com.monolito.modularizar.order.internal.service;
 
 import com.monolito.modularizar.domain.Invoice;
-import com.monolito.modularizar.domain.Item;
+import com.monolito.modularizar.inventory.internal.domain.Item;
 import com.monolito.modularizar.order.internal.persistence.OrderEntity;
 import com.monolito.modularizar.order.internal.persistence.OrderLineEntity;
 import com.monolito.modularizar.order.internal.persistence.OrderStatusPersistence;
@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.monolito.modularizar.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
