@@ -18,6 +18,9 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.monolito.modularizar.invoice.internal.domain.Invoice;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
