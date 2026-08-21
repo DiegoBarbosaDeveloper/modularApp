@@ -1,7 +1,7 @@
 package com.monolito.modularizar.inventory.internal.service;
 
 import com.monolito.modularizar.inventory.internal.domain.Item;
-import com.monolito.modularizar.order.internal.service.InventoryApi;
+import com.monolito.modularizar.inventory.api.InventoryApi;
 import com.monolito.modularizar.inventory.internal.persistence.ItemRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;

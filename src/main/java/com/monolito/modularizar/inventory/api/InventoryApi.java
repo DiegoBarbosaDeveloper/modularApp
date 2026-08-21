@@ -1,4 +1,4 @@
-package com.monolito.modularizar.order.internal.service;
+package com.monolito.modularizar.inventory.api;
 
 import com.monolito.modularizar.inventory.internal.domain.Item;
 

@@ -2,12 +2,15 @@ package com.monolito.modularizar.order.internal.service;
 
 import com.monolito.modularizar.inventory.internal.domain.Item;
 import com.monolito.modularizar.invoice.api.InvoiceApi;
-import com.monolito.modularizar.invoice.internal.domain.Invoice;
+import com.monolito.modularizar.inventory.api.InventoryApi;
+import com.monolito.modularizar.order.api.OrderApi;
+import com.monolito.modularizar.order.internal.domain.Order;
+import com.monolito.modularizar.order.internal.mapper.OrderMapper;
 import com.monolito.modularizar.order.internal.persistence.OrderEntity;
 import com.monolito.modularizar.order.internal.persistence.OrderLineEntity;
 import com.monolito.modularizar.order.internal.persistence.OrderStatusPersistence;
 import com.monolito.modularizar.order.internal.persistence.OrderRepository;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService {
+public class OrderService implements OrderApi {
 
     private final OrderRepository orderRepository;
     private final InventoryApi inventoryApi;
     private final InvoiceApi invoiceApi;
+    private final OrderMapper orderMapper;
 
 
     @Transactional
-    public OrderEntity createOrder(List<String> lineItems) {
+    @Override
+    public Order createOrder(List<String> lineItems) {
         List<OrderLineEntity> lines = new ArrayList<>();
         double total = 0.0;
 
@@ -60,6 +65,6 @@ public class OrderService {
             .lines(lines)
             .build();
 
-        return orderRepository.save(orderEntity);
+        return orderMapper.toDomainFromEntity(orderRepository.save(orderEntity));
     }
 }
