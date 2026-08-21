@@ -1,13 +1,14 @@
 package com.monolito.modularizar.service;
 
 import com.monolito.modularizar.domain.Item;
+import com.monolito.modularizar.order.internal.service.InventoryApi;
 import com.monolito.modularizar.repository.ItemRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class InventoryService {
+public class InventoryService implements InventoryApi {
 
     private final ItemRepository itemRepository;
 
@@ -19,12 +20,16 @@ public class InventoryService {
         return itemRepository.findAll();
     }
 
-    public Item getItem(Long id) {
-        return itemRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Item no encontrado: " + id));
+    @Override
+    public Item getItem(Long itemId) {
+        return itemRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException("Item no encontrado: " + itemId));
     }
 
+
+
     @Transactional
+    @Override
     public Item createItem(String name, String sku, int stock, double price) {
         if (itemRepository.findBySku(sku).isPresent()) {
             throw new IllegalArgumentException("Ya existe un item con el SKU: " + sku);
@@ -39,6 +44,7 @@ public class InventoryService {
     }
 
     @Transactional
+    @Override
     public Item adjustStock(Long itemId, int delta) {
         Item item = getItem(itemId);
         item.adjustStock(delta);

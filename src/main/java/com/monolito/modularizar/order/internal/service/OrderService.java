@@ -11,19 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.monolito.modularizar.service.InventoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final InventoryService inventoryService;
+    private final InventoryApi inventoryApi;
 
-    public OrderService(OrderRepository orderRepository, InventoryService inventoryService) {
-        this.orderRepository = orderRepository;
-        this.inventoryService = inventoryService;
-    }
 
     @Transactional
     public OrderEntity createOrder(List<String> lineItems) {
@@ -42,14 +40,14 @@ public class OrderService {
                 throw new IllegalArgumentException("La cantidad debe ser positiva.");
             }
 
-            Item item = inventoryService.getItem(itemId);
+            Item item = inventoryApi.getItem(itemId);
             if (item.getStock() < quantity) {
                 throw new IllegalArgumentException("No hay stock suficiente para el item " + item.getName());
             }
 
             total += item.getPrice() * quantity;
             lines.add(new OrderLineEntity(item.getId(), quantity, item.getPrice()));
-            inventoryService.adjustStock(itemId, -quantity);
+            inventoryApi.adjustStock(itemId, -quantity);
         }
 
         Invoice invoice = Invoice.builder()
