@@ -18,8 +18,9 @@ public class InventoryService implements InventoryApi {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
 
-    public List<ItemEntity> getItems() {
-        return itemRepository.findAll();
+    @Override
+    public List<Item> getItems() {
+        return itemRepository.findAll().stream().map(itemMapper::toDomain).toList();
     }
 
     @Override
@@ -32,7 +33,7 @@ public class InventoryService implements InventoryApi {
 
     @Transactional
     @Override
-    public ItemEntity createItem(String name, String sku, int stock, double price) {
+    public Item createItem(String name, String sku, int stock, double price) {
         if (itemRepository.findBySku(sku).isPresent()) {
             throw new IllegalArgumentException("Ya existe un item con el SKU: " + sku);
         }
@@ -42,7 +43,7 @@ public class InventoryService implements InventoryApi {
             .stock(stock)
             .price(price)
             .build();
-        return itemRepository.save(item);
+        return itemMapper.toDomain(itemRepository.save(item));
     }
 
     @Transactional

@@ -46,7 +46,7 @@ public class OrderService implements OrderApi {
                 throw new IllegalArgumentException("La cantidad debe ser positiva.");
             }
 
-            ItemEntity item = inventoryApi.getItem(itemId);
+            var item = inventoryApi.getItem(itemId);
             if (item.getStock() < quantity) {
                 throw new IllegalArgumentException("No hay stock suficiente para el item " + item.getName());
             }
