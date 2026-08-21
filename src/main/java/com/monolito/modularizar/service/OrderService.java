@@ -1,10 +1,10 @@
 package com.monolito.modularizar.service;
 
-import com.monolito.modularizar.domain.Invoice;
 import com.monolito.modularizar.domain.Item;
 import com.monolito.modularizar.domain.Order;
 import com.monolito.modularizar.domain.OrderLine;
 import com.monolito.modularizar.domain.OrderStatus;
+import com.monolito.modularizar.invoice.internal.domain.Invoice;
 import com.monolito.modularizar.repository.OrderRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
