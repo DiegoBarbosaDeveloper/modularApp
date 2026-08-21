@@ -27,7 +27,7 @@ class OrderServiceTest {
         Order order = orderService.createOrder(List.of(item.getId() + ":2"));
 
         assertEquals(100.0, order.getTotal());
-        assertNotNull(order.getInvoice());
+        assertNotNull(order.getInvoiceId());
         assertEquals("PENDING", order.getStatus().name());
     }
 }
