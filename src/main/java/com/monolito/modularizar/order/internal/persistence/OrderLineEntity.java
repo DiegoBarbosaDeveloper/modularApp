@@ -1,4 +1,4 @@
-package com.monolito.modularizar.domain;
+package com.monolito.modularizar.order.internal.persistence;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderLine {
+public class OrderLineEntity {
 
     @Column(name = "item_id", nullable = false)
     private Long itemId;
@@ -21,5 +21,5 @@ public class OrderLine {
     private int quantity;
 
     @Column(name = "unit_price", nullable = false)
-    private double unitPrice;
+    private Double unitPrice;
 }

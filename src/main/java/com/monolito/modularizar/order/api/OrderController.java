@@ -1,7 +1,7 @@
-package com.monolito.modularizar.controller;
+package com.monolito.modularizar.order.api;
 
-import com.monolito.modularizar.domain.Order;
-import com.monolito.modularizar.service.OrderService;
+import com.monolito.modularizar.order.internal.persistence.OrderEntity;
+import com.monolito.modularizar.order.internal.service.OrderService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> create(@Valid @RequestBody List<String> lines) {
-        Order order = orderService.createOrder(lines);
-        return ResponseEntity.ok(order);
+    public ResponseEntity<OrderEntity> create(@Valid @RequestBody List<String> lines) {
+        OrderEntity orderEntity = orderService.createOrder(lines);
+        return ResponseEntity.ok(orderEntity);
     }
 }
